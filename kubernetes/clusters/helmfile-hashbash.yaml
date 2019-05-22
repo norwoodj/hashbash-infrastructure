@@ -1,4 +1,9 @@
 releases:
+  ##
+  # Cluster-level components
+  ##
+
+  # Prometheus/Grafana/Node-metrics-collection
   - name: prometheus-operator
     namespace: monitoring
     chart: stable/prometheus-operator
@@ -9,6 +14,7 @@ releases:
     secrets:
       - {{ requiredEnv "HELMFILE_CLUSTER" }}/prometheus-operator/secrets.yaml
 
+  # Global Ingress Controller
   - name: nginx-ingress
     namespace: web-ingress
     chart: stable/nginx-ingress
@@ -16,3 +22,29 @@ releases:
     values:
       - global/nginx-ingress/values.yaml
       - {{ requiredEnv "HELMFILE_CLUSTER" }}/nginx-ingress/values.yaml
+
+  ##
+  # Hashbash Components
+  ##
+
+  # mysql instance
+  - name: mysql
+    namespace: hashbash-components
+    chart: stable/mysql
+    version: ^1.1.1
+    values:
+      - global/mysql/values.yaml
+      - {{ requiredEnv "HELMFILE_CLUSTER" }}/mysql/values.yaml
+    secrets:
+      - {{ requiredEnv "HELMFILE_CLUSTER" }}/mysql/secrets.yaml
+
+  # rabbitmq instance
+  - name: rabbitmq
+    namespace: hashbash-components
+    chart: stable/rabbitmq
+    version: ^5.5.2
+    values:
+      - global/rabbitmq/values.yaml
+      - {{ requiredEnv "HELMFILE_CLUSTER" }}/rabbitmq/values.yaml
+    secrets:
+      - {{ requiredEnv "HELMFILE_CLUSTER" }}/rabbitmq/secrets.yaml
