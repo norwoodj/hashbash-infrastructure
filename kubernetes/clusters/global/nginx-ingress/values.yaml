@@ -1,0 +1,15 @@
+controller:
+  metrics:
+    enabled: true
+
+    service:
+      enableHttps: false
+
+    serviceMonitor:
+      enabled: true
+
+      additionalLabels:
+        release: prometheus-operator
+
+  stats:
+    enabled: true

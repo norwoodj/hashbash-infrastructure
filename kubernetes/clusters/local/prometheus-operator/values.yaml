@@ -1,0 +1,15 @@
+grafana:
+  ingress:
+    annotations:
+      kubernetes.io/ingress.class: nginx
+
+    hosts:
+      - grafana.hashbash.local
+
+prometheus:
+  ingress:
+    annotations:
+      kubernetes.io/ingress.class: nginx
+
+    hosts:
+      - prometheus.hashbash.local

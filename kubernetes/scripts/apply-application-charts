@@ -1,0 +1,63 @@
+#!/usr/bin/env bash
+set -o errexit; set -o nounset; set -o pipefail
+
+readonly KUBERNETES_DIR="$(dirname "${0}")/.."
+readonly CLUSTERS_DIR="${KUBERNETES_DIR}/clusters"
+
+
+function usage {
+    echo "${0} <cluster>"
+    echo
+    echo "Clusters:"
+    for c in $(list_clusters); do
+        echo "  - ${c}"
+    done
+}
+
+function initialize_or_upgrade_tiller {
+    helm init --upgrade
+}
+
+function list_clusters {
+    find "${CLUSTERS_DIR}" -name helmfile.yaml \
+        | xargs -n1 dirname \
+        | xargs -n1 basename
+}
+
+function check_valid_cluster {
+    local cluster=${1}
+    local available_clusters=($(list_clusters))
+
+    for c in "${available_clusters[@]}"; do
+        if [[  "${cluster}" == "${c}" ]]; then
+            return
+        fi
+    done
+
+    echo "No cluster named '${cluster}' configured!"
+    echo
+    usage
+    return 1
+}
+
+function apply_charts {
+    local cluster=${1}
+    local helmfile="${CLUSTERS_DIR}/${cluster}/helmfile.yaml"
+
+    HELMFILE_CLUSTER="${cluster}" \
+        helmfile -f "${helmfile}" --interactive apply
+}
+
+function main {
+    if [[ -z "${1:-}" ]]; then
+        usage
+        return 1
+    fi
+
+    local cluster=${1}
+    check_valid_cluster "${cluster}"
+    initialize_or_upgrade_tiller
+    apply_charts ${cluster}
+}
+
+main "${@}"

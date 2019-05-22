@@ -1,0 +1,18 @@
+releases:
+  - name: prometheus-operator
+    namespace: monitoring
+    chart: stable/prometheus-operator
+    version: ^5.10.1
+    values:
+      - global/prometheus-operator/values.yaml
+      - {{ requiredEnv "HELMFILE_CLUSTER" }}/prometheus-operator/values.yaml
+    secrets:
+      - {{ requiredEnv "HELMFILE_CLUSTER" }}/prometheus-operator/secrets.yaml
+
+  - name: nginx-ingress
+    namespace: web-ingress
+    chart: stable/nginx-ingress
+    version: ^1.6.11
+    values:
+      - global/nginx-ingress/values.yaml
+      - {{ requiredEnv "HELMFILE_CLUSTER" }}/nginx-ingress/values.yaml
