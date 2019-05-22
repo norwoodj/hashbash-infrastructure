@@ -1,0 +1,13 @@
+image:
+  repository: jnorwood/hashbash-webapp-go
+  tag: release-20190521-1727
+
+configmap:
+  data:
+    HASHBASH_DATABASE_HOST: mysql.hashbash-components.svc.cluster.local
+    HASHBASH_RABBITMQ_HOST: rabbitmq-0.rabbitmq-headless.hashbash-components.svc.cluster.local
+    HASHBASH_RABBITMQ_USERNAME: user
+
+ingress:
+  hosts:
+    - go.hashbash.local

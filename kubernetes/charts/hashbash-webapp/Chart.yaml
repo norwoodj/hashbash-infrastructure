@@ -1,0 +1,11 @@
+apiVersion: v1
+engine: gotpl
+name: hashbash
+version: 0.0.0
+description: Web rainbow table generator and searcher
+home: https://github.com/norwoodj/hashbash-infrastructure
+sources:
+  - https://github.com/norwoodj/hashbash-infrastructure
+maintainers:
+  - name: norwoodj
+    email: norwood.john.m@gmail.com

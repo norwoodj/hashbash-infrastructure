@@ -48,3 +48,22 @@ releases:
       - {{ requiredEnv "HELMFILE_CLUSTER" }}/rabbitmq/values.yaml
     secrets:
       - {{ requiredEnv "HELMFILE_CLUSTER" }}/rabbitmq/secrets.yaml
+
+  ##
+  # Hashbash Applications
+  ##
+  - name: hashbash-webapp-go
+    namespace: hashbash
+    chart: ../charts/hashbash-webapp
+    values:
+      - {{ requiredEnv "HELMFILE_CLUSTER" }}/hashbash-webapp-go/values.yaml
+    secrets:
+      - {{ requiredEnv "HELMFILE_CLUSTER" }}/hashbash-webapp-go/secrets.yaml
+
+  - name: hashbash-webapp-java
+    namespace: hashbash
+    chart: ../charts/hashbash-webapp
+    values:
+      - {{ requiredEnv "HELMFILE_CLUSTER" }}/hashbash-webapp-java/values.yaml
+    secrets:
+      - {{ requiredEnv "HELMFILE_CLUSTER" }}/hashbash-webapp-java/secrets.yaml

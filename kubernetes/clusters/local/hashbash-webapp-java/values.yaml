@@ -1,0 +1,11 @@
+configmap:
+  data:
+    SPRING_PROFILES_ACTIVE: LCL
+
+    HASHBASH_DATABASE_HOST: mysql.hashbash-components.svc.cluster.local
+    SPRING_RABBITMQ_USERNAME: user
+    SPRING_RABBITMQ_HOST: rabbitmq-0.rabbitmq-headless.hashbash-components.svc.cluster.local
+
+ingress:
+  hosts:
+    - java.hashbash.local

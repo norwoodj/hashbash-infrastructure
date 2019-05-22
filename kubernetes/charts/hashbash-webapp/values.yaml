@@ -1,0 +1,55 @@
+replicas: 1
+
+image:
+  repository: jnorwood/hashbash-webapp
+  tag: release-20190519-2141
+  pullPolicy: IfNotPresent
+
+nginxImage:
+  repository: jnorwood/hashbash-nginx
+  tag: release-20190425-1647
+  pullPolicy: IfNotPresent
+
+nginxUpstreamHostname: hashbash-webapp
+
+readinessProbe: {}
+#  initialDelaySeconds: 10
+#  httpGet:
+#    path: /health
+#    port: management
+#
+livenessProbe: {}
+#  initialDelaySeconds: 10
+#  httpGet:
+#    path: /health
+#    port: management
+
+ports:
+  http: 80
+  management: 8081
+
+resources: {}
+nodeSelector: {}
+tolerations: []
+
+configmap:
+  enabled: true
+  data: {}
+
+ingress:
+  enabled: false
+  annotations:
+    kubernetes.io/ingress.class: nginx
+  hosts: []
+  tls: []
+
+secret:
+  enabled: true
+  data: {}
+
+service:
+  port: 80
+  targetPort: 3000
+  annotations: {}
+  labels: {}
+
