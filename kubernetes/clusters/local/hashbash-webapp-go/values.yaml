@@ -1,6 +1,6 @@
 image:
   repository: jnorwood/hashbash-webapp-go
-  tag: release-20190521-1727
+  tag: release-20190525-2030
 
 configmap:
   data:
@@ -11,3 +11,6 @@ configmap:
 ingress:
   hosts:
     - go.hashbash.local
+
+servicemonitor:
+  enabled: true

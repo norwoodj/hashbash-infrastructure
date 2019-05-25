@@ -1,0 +1,26 @@
+{{- if .Values.servicemonitor.enabled }}
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{ template "app.fullname" . }}
+  labels:
+    app: {{ template "app.name" . }}
+    chart: {{ .Chart.Name }}
+    heritage: {{ .Release.Service }}
+{{ toYaml .Values.servicemonitor.labels | indent 4 }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ template "app.name" . }} 
+      release: {{ .Release.Name }}
+  namespaceSelector:
+    matchNames:
+      - {{ .Release.Namespace }}
+  endpoints:
+    - port: management
+      path: {{ .Values.servicemonitor.path }}
+  {{- if .Values.servicemonitor.metricRelabelings }}
+      metricRelabelings:
+{{ toYaml .Values.servicemonitor.metricRelabelings | indent 6 }}
+  {{- end }}
+{{- end }}

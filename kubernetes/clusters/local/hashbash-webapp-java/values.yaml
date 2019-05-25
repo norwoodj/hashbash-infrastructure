@@ -1,3 +1,7 @@
+image:
+  repository: jnorwood/hashbash-webapp
+  tag: release-20190525-2032
+
 configmap:
   data:
     SPRING_PROFILES_ACTIVE: LCL
@@ -9,3 +13,7 @@ configmap:
 ingress:
   hosts:
     - java.hashbash.local
+
+servicemonitor:
+  enabled: true
+  path: /actuator/prometheus

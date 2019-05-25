@@ -50,7 +50,7 @@ releases:
       - {{ requiredEnv "HELMFILE_CLUSTER" }}/rabbitmq/secrets.yaml
 
   ##
-  # Hashbash Applications
+  # Hashbash Webapps
   ##
   - name: hashbash-webapp-go
     namespace: hashbash

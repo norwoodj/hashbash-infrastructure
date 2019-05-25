@@ -29,6 +29,6 @@ should have a running kubernetes cluster as well as the kubeconfig file necessar
 
 From there, if you can successfully decrypt the secrets.yaml files in the codebase (you've replaced mine right?),
 you should be able to run:
-```
-
+```bash
+./kubernetes/scripts/apply-application-charts local
 ```
