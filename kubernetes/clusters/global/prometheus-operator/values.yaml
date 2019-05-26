@@ -8,6 +8,10 @@ defaultRules:
   create: false
 
 grafana:
+  sidecar:
+    dashboards:
+      searchNamespace: ALL
+
   ingress:
     enabled: true
 

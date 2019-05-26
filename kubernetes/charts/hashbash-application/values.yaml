@@ -5,12 +5,14 @@ image:
   tag: release-20190519-2141
   pullPolicy: IfNotPresent
 
-nginxImage:
-  repository: jnorwood/hashbash-nginx
-  tag: release-20190425-1647
-  pullPolicy: IfNotPresent
+frontend:
+  enabled: true
+  image:
+    repository: jnorwood/hashbash-nginx
+    tag: release-20190425-1647
+    pullPolicy: IfNotPresent
 
-nginxUpstreamHostname: hashbash-webapp
+  upstreamHostname: hashbash-webapp
 
 readinessProbe: {}
 #  initialDelaySeconds: 10

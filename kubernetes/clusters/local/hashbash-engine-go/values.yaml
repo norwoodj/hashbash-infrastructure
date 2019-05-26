@@ -1,7 +1,7 @@
-frontend: {enabled: true}
+frontend: {enabled: false}
 
 image:
-  repository: jnorwood/hashbash-webapp-go
+  repository: jnorwood/hashbash-consumers-go
   tag: release-20190526-1738
 
 configmap:
@@ -11,9 +11,7 @@ configmap:
     HASHBASH_RABBITMQ_USERNAME: user
 
 ingress:
-  enabled: true
-  hosts:
-    - go.hashbash.local
+  enabled: false
 
 servicemonitor:
   enabled: true

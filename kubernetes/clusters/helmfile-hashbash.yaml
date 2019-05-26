@@ -54,7 +54,7 @@ releases:
   ##
   - name: hashbash-webapp-go
     namespace: hashbash
-    chart: ../charts/hashbash-webapp
+    chart: ../charts/hashbash-application
     values:
       - {{ requiredEnv "HELMFILE_CLUSTER" }}/hashbash-webapp-go/values.yaml
     secrets:
@@ -62,8 +62,34 @@ releases:
 
   - name: hashbash-webapp-java
     namespace: hashbash
-    chart: ../charts/hashbash-webapp
+    chart: ../charts/hashbash-application
     values:
       - {{ requiredEnv "HELMFILE_CLUSTER" }}/hashbash-webapp-java/values.yaml
     secrets:
       - {{ requiredEnv "HELMFILE_CLUSTER" }}/hashbash-webapp-java/secrets.yaml
+
+  ##
+  # Hashbash Engines
+  ##
+  - name: hashbash-engine-go
+    namespace: hashbash
+    chart: ../charts/hashbash-application
+    values:
+      - {{ requiredEnv "HELMFILE_CLUSTER" }}/hashbash-engine-go/values.yaml
+    secrets:
+      - {{ requiredEnv "HELMFILE_CLUSTER" }}/hashbash-engine-go/secrets.yaml
+
+  - name: hashbash-engine-java
+    namespace: hashbash
+    chart: ../charts/hashbash-application
+    values:
+      - {{ requiredEnv "HELMFILE_CLUSTER" }}/hashbash-engine-java/values.yaml
+    secrets:
+      - {{ requiredEnv "HELMFILE_CLUSTER" }}/hashbash-engine-java/secrets.yaml
+
+  ##
+  # Hashbash Dashboards
+  ##
+  - name: hashbash-dashboards
+    namespace: hashbash
+    chart: ../charts/hashbash-dashboards

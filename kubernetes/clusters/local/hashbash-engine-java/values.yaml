@@ -1,8 +1,11 @@
-frontend: {enabled: true}
+frontend: {enabled: false}
 
 image:
-  repository: jnorwood/hashbash-webapp
+  repository: jnorwood/hashbash-consumers
   tag: release-20190526-1740
+
+ports:
+  management: 8082
 
 configmap:
   data:

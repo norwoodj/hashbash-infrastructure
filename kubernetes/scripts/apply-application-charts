@@ -45,7 +45,10 @@ function apply_charts {
     local helmfile="${CLUSTERS_DIR}/${cluster}/helmfile.yaml"
 
     HELMFILE_CLUSTER="${cluster}" \
-        helmfile -f "${helmfile}" --interactive apply
+        helmfile -f "${helmfile}" \
+            --interactive \
+            $(test -n "${SELECTOR:-}" && echo --selector "${SELECTOR}") \
+            apply
 }
 
 function main {

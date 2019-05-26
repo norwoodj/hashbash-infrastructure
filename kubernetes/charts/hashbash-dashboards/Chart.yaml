@@ -1,0 +1,11 @@
+apiVersion: v1
+engine: gotpl
+name: hashbash-dashboards
+version: 0.0.0
+description: Grafana dashboards for visualing hashbash prometheus metrics
+home: https://github.com/norwoodj/hashbash-infrastructure
+sources:
+  - https://github.com/norwoodj/hashbash-infrastructure
+maintainers:
+  - name: norwoodj
+    email: norwood.john.m@gmail.com

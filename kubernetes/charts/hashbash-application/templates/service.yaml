@@ -9,10 +9,12 @@ metadata:
     heritage: {{ .Release.Service }}
 spec:
   ports:
+{{- if .Values.frontend.enabled }}
     - name: http
       port: 80
       protocol: TCP
       targetPort: http
+{{- end }}
     - name: management
       port: 8080
       protocol: TCP

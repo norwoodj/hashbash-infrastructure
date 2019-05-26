@@ -20,18 +20,22 @@ spec:
         app: {{ template "app.name" . }}
         release: {{ .Release.Name }}
     spec:
+{{- if .Values.frontend.enabled }}
       hostAliases:
         - ip: 127.0.0.1
           hostnames:
-            - {{ .Values.nginxUpstreamHostname }}
+            - {{ .Values.frontend.upstreamHostname }}
+{{- end }}
 
       containers:
-        - name: {{ .Chart.Name }}-nginx
-          image: "{{ .Values.nginxImage.repository }}:{{ .Values.nginxImage.tag }}"
-          imagePullPolicy: {{ .Values.nginxImage.pullPolicy }}
+{{- if .Values.frontend.enabled }}
+        - name: {{ .Chart.Name }}-frontend-nginx
+          image: "{{ .Values.frontend.image.repository }}:{{ .Values.frontend.image.tag }}"
+          imagePullPolicy: {{ .Values.frontend.image.pullPolicy }}
           ports:
             - name: http
               containerPort: {{ .Values.ports.http }}
+{{- end }}
 
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
