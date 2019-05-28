@@ -15,7 +15,7 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "iteration": 1558899755772,
+  "iteration": 1558928432994,
   "links": [],
   "panels": [
     {
@@ -57,7 +57,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum by (job, batch_size, chain_length, hash_function, rainbow_table_id)(rainbow_chain_created_total{job=\"hashbash-engine-go\"} offset $golang_job_time_shift)",
+          "expr": "sum by (job)(rainbow_chain_created_total{job=\"hashbash-engine-go\"} offset $golang_job_time_shift)",
           "format": "time_series",
           "hide": false,
           "intervalFactor": 1,
@@ -65,7 +65,7 @@
           "refId": "A"
         },
         {
-          "expr": "sum by (job, batch_size, chain_length, hash_function, rainbow_table_id)(rainbow_chain_created_total{job=\"hashbash-engine-java\"})",
+          "expr": "sum by (job)(rainbow_chain_created_total{job=\"hashbash-engine-java\"})",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "{{ job }}",
@@ -159,10 +159,10 @@
           "refId": "B"
         },
         {
-          "expr": "sum by (job)(jvm_memory_used_bytes{job=\"hashbash-engine-java\"})",
+          "expr": "sum(container_memory_usage_bytes{namespace=\"hashbash\", container_name=\"hashbash\", pod_name=~\"hashbash-engine-java.*\"})",
           "format": "time_series",
           "intervalFactor": 1,
-          "legendFormat": "{{ job }} - memory use",
+          "legendFormat": "hashbash-engine-java - memory use",
           "refId": "A"
         }
       ],
@@ -255,28 +255,28 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum by (job, batch_size, chain_length, hash_function, rainbow_table_id)(rainbow_chain_generate_seconds_sum{job=\"hashbash-engine-go\"} offset $golang_job_time_shift)",
+          "expr": "sum by (job)(rainbow_chain_generate_seconds_sum{job=\"hashbash-engine-go\"} offset $golang_job_time_shift)",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "{{job}} - generate",
           "refId": "A"
         },
         {
-          "expr": "sum by (job, batch_size, chain_length, hash_function, rainbow_table_id)(rainbow_chain_generate_seconds_sum{job=\"hashbash-engine-java\"})",
+          "expr": "sum by (job)(rainbow_chain_generate_seconds_sum{job=\"hashbash-engine-java\"})",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "{{job}} - generate",
           "refId": "B"
         },
         {
-          "expr": "sum by (job, batch_size, chain_length, hash_function, rainbow_table_id)(rainbow_chain_write_seconds_sum{job=\"hashbash-engine-go\"} offset $golang_job_time_shift)",
+          "expr": "sum by (job)(rainbow_chain_write_seconds_sum{job=\"hashbash-engine-go\"} offset $golang_job_time_shift)",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "{{job}} - write",
           "refId": "C"
         },
         {
-          "expr": "sum by (job, batch_size, chain_length, hash_function, rainbow_table_id)(rainbow_chain_write_seconds_sum{job=\"hashbash-engine-java\"})",
+          "expr": "sum by (job)(rainbow_chain_write_seconds_sum{job=\"hashbash-engine-java\"})",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "{{job}} - write",
@@ -328,7 +328,9 @@
   "refresh": false,
   "schemaVersion": 18,
   "style": "dark",
-  "tags": [],
+  "tags": [
+    "hashbash"
+  ],
   "templating": {
     "list": [
       {
@@ -352,7 +354,7 @@
     ]
   },
   "time": {
-    "from": "now-30m",
+    "from": "now-1h",
     "to": "now"
   },
   "timepicker": {
@@ -383,5 +385,5 @@
   "timezone": "",
   "title": "Hashbash Generation Stats",
   "uid": "IxJHtjZZk",
-  "version": 1
+  "version": 2
 }

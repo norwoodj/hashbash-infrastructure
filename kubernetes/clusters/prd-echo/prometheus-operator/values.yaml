@@ -1,0 +1,16 @@
+grafana:
+  ingress:
+    hosts:
+      - grafana.hashbash.com
+
+prometheus:
+  ingress:
+    hosts:
+      - prometheus.hashbash.com
+
+  prometheusSpec:
+    storageSpec:
+      class: gp2
+      resources:
+        requests:
+          storage: 4Gi

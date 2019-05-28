@@ -1,0 +1,23 @@
+configmap:
+  data:
+    SPRING_PROFILES_ACTIVE: LCL
+
+    HASHBASH_DATABASE_HOST: mysql.hashbash-components.svc.cluster.local
+    SPRING_RABBITMQ_USERNAME: user
+    SPRING_RABBITMQ_HOST: rabbitmq-0.rabbitmq-headless.hashbash-components.svc.cluster.local
+
+livenessProbe:
+  initialDelaySeconds: 30
+  httpGet:
+    path: /actuator/health
+    port: management
+
+readinessProbe:
+  initialDelaySeconds: 30
+  httpGet:
+    path: /actuator/health
+    port: management
+
+servicemonitor:
+  enabled: true
+  path: /actuator/prometheus

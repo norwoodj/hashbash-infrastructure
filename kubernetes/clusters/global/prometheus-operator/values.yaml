@@ -5,7 +5,7 @@ coreDns:
   enabled: false
 
 defaultRules:
-  create: false
+  create: true
 
 grafana:
   sidecar:

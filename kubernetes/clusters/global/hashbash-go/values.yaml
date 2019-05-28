@@ -1,0 +1,21 @@
+configmap:
+  data:
+    HASHBASH_DATABASE_HOST: mysql.hashbash-components.svc.cluster.local
+    HASHBASH_RABBITMQ_HOST: rabbitmq-0.rabbitmq-headless.hashbash-components.svc.cluster.local
+    HASHBASH_RABBITMQ_USERNAME: user
+
+livenessProbe:
+  initialDelaySeconds: 5
+  httpGet:
+    path: /live
+    port: management
+
+readinessProbe:
+  initialDelaySeconds: 5
+  httpGet:
+    path: /ready
+    port: management
+
+servicemonitor:
+  enabled: true
+  path: /prometheus

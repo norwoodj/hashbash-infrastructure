@@ -6,3 +6,10 @@ image:
 
 ingress:
   enabled: false
+
+nodeSelector: {role: engine}
+tolerations:
+  - key: engine
+    operator: Equal
+    value: "true"
+    effect: "NoSchedule"

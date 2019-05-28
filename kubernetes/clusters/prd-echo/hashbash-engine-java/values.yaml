@@ -4,8 +4,12 @@ image:
   repository: jnorwood/hashbash-consumers
   tag: release-20190526-1740
 
-ingress:
-  enabled: false
-
 ports:
   management: 8082
+
+nodeSelector: {role: engine}
+tolerations:
+  - key: engine
+    operator: Equal
+    value: "true"
+    effect: "NoSchedule"
