@@ -15,7 +15,7 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "iteration": 1558928432994,
+  "iteration": 1559423023256,
   "links": [],
   "panels": [
     {
@@ -115,8 +115,8 @@
     },
     {
       "aliasColors": {
-        "hashbash-engine-go - memory use": "#0005aa",
-        "hashbash-engine-java - memory use": "#0d9e00"
+        "hashbash-engine-go": "#0005aa",
+        "hashbash-engine-java": "#0d9e00"
       },
       "bars": false,
       "dashLength": 10,
@@ -128,7 +128,7 @@
         "x": 12,
         "y": 0
       },
-      "id": 6,
+      "id": 8,
       "legend": {
         "avg": false,
         "current": false,
@@ -152,25 +152,25 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(container_memory_usage_bytes{namespace=\"hashbash\", container_name=\"hashbash\", pod_name=~\"hashbash-engine-go.*\"} offset $golang_job_time_shift)",
+          "expr": "sum(namespace_pod_name_container_name:container_cpu_usage_seconds_total:sum_rate{namespace=\"hashbash\", pod_name=~\"hashbash-engine-go.*\"}) by (pod_name)",
           "format": "time_series",
           "intervalFactor": 1,
-          "legendFormat": "hashbash-engine-go - memory use",
-          "refId": "B"
+          "legendFormat": "hashbash-engine-go",
+          "refId": "A"
         },
         {
-          "expr": "sum(container_memory_usage_bytes{namespace=\"hashbash\", container_name=\"hashbash\", pod_name=~\"hashbash-engine-java.*\"})",
+          "expr": "sum(namespace_pod_name_container_name:container_cpu_usage_seconds_total:sum_rate{namespace=\"hashbash\", pod_name=~\"hashbash-engine-java.*\"}) by (pod_name)",
           "format": "time_series",
           "intervalFactor": 1,
-          "legendFormat": "hashbash-engine-java - memory use",
-          "refId": "A"
+          "legendFormat": "hashbash-engine-java",
+          "refId": "B"
         }
       ],
       "thresholds": [],
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Memory Usage",
+      "title": "CPU usage",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -186,7 +186,7 @@
       },
       "yaxes": [
         {
-          "format": "bytes",
+          "format": "short",
           "label": null,
           "logBase": 1,
           "max": null,
@@ -323,9 +323,103 @@
         "align": false,
         "alignLevel": null
       }
+    },
+    {
+      "aliasColors": {
+        "hashbash-engine-go - memory use": "#0005aa",
+        "hashbash-engine-java - memory use": "#0d9e00"
+      },
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "fill": 1,
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 8
+      },
+      "id": 6,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "percentage": false,
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "sum(container_memory_usage_bytes{namespace=\"hashbash\", container_name=\"hashbash\", pod_name=~\"hashbash-engine-go.*\"} offset $golang_job_time_shift)",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "hashbash-engine-go - memory use",
+          "refId": "B"
+        },
+        {
+          "expr": "sum(container_memory_usage_bytes{namespace=\"hashbash\", container_name=\"hashbash\", pod_name=~\"hashbash-engine-java.*\"})",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "hashbash-engine-java - memory use",
+          "refId": "A"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Memory Usage",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "bytes",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
     }
   ],
-  "refresh": false,
+  "refresh": "30s",
   "schemaVersion": 18,
   "style": "dark",
   "tags": [
