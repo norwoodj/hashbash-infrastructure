@@ -62,25 +62,34 @@ module "eks" {
   subnets = ["${module.vpc.private_subnets}"]
 
   manage_aws_auth    = true
-  worker_group_count = 2
+  worker_group_count = 3
 
   worker_groups = [
     {
       name                 = "default"
+      instance_type        = "t3.medium"
       key_name             = "${var.ec2_key_pair}"
-      instance_type        = "m5.large"
       asg_desired_capacity = 1
-      asg_min_size         = 1
+      asg_min_size         = 0
+      asg_max_size         = 1
+    },
+    {
+      name                 = "database"
+      instance_type        = "m5.xlarge"
+      key_name             = "${var.ec2_key_pair}"
+      kubelet_extra_args   = "--node-labels role=database --register-with-taints database=true:NoSchedule"
+      asg_desired_capacity = 1
+      asg_min_size         = 0
       asg_max_size         = 1
     },
     {
       name                 = "engine"
-      key_name             = "${var.ec2_key_pair}"
       instance_type        = "c4.2xlarge"
-      asg_desired_capacity = 1
-      asg_min_size         = 1
-      asg_max_size         = 1
+      key_name             = "${var.ec2_key_pair}"
       kubelet_extra_args   = "--node-labels role=engine --register-with-taints engine=true:NoSchedule"
+      asg_desired_capacity = 1
+      asg_min_size         = 0
+      asg_max_size         = 1
     },
   ]
 

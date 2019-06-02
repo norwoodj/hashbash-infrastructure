@@ -1,4 +1,16 @@
+configurationFiles:
+  performance.cnf: |-
+    [mysqld]
+    innodb_buffer_pool_size = 12G
+
 persistence:
   enabled: true
   size: 16Gi
   storageClass: gp2
+
+nodeSelector: {role: database}
+tolerations:
+  - key: database
+    operator: Equal
+    value: "true"
+    effect: "NoSchedule"

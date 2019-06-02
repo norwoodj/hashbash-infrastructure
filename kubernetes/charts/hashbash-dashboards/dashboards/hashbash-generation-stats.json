@@ -15,7 +15,7 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "iteration": 1559423023256,
+  "iteration": 1559481235008,
   "links": [],
   "panels": [
     {
@@ -57,7 +57,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum by (job)(rainbow_chain_created_total{job=\"hashbash-engine-go\"} offset $golang_job_time_shift)",
+          "expr": "sum by (rainbow_table_id, job)(rainbow_chain_created_total{job=\"hashbash-engine-go\", rainbow_table_id=~\"$rainbow_table_id\"} offset $golang_job_time_shift and (rate(rainbow_chain_created_total{job=\"hashbash-engine-go\", rainbow_table_id=~\".*\"}[5m] offset $golang_job_time_shift) > 0))",
           "format": "time_series",
           "hide": false,
           "intervalFactor": 1,
@@ -65,7 +65,7 @@
           "refId": "A"
         },
         {
-          "expr": "sum by (job)(rainbow_chain_created_total{job=\"hashbash-engine-java\"})",
+          "expr": "sum by (rainbow_table_id, job)(rainbow_chain_created_total{job=\"hashbash-engine-java\", rainbow_table_id=~\"$rainbow_table_id\"} and (rate(rainbow_chain_created_total{job=\"hashbash-engine-java\", rainbow_table_id=~\".*\"}[5m]) > 0))",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "{{ job }}",
@@ -255,28 +255,28 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum by (job)(rainbow_chain_generate_seconds_sum{job=\"hashbash-engine-go\"} offset $golang_job_time_shift)",
+          "expr": "sum by (job, rainbow_table_id)(rainbow_chain_generate_seconds_sum{job=\"hashbash-engine-go\", rainbow_table_id=~\"$rainbow_table_id\"} offset $golang_job_time_shift and rate(rainbow_chain_generate_seconds_sum{job=\"hashbash-engine-go\", rainbow_table_id=~\"$rainbow_table_id\"}[5m] offset $golang_job_time_shift) > 0)",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "{{job}} - generate",
           "refId": "A"
         },
         {
-          "expr": "sum by (job)(rainbow_chain_generate_seconds_sum{job=\"hashbash-engine-java\"})",
+          "expr": "sum by (job, rainbow_table_id)(rainbow_chain_generate_seconds_sum{job=\"hashbash-engine-java\", rainbow_table_id=~\"$rainbow_table_id\"} and rate(rainbow_chain_generate_seconds_sum{job=\"hashbash-engine-java\", rainbow_table_id=~\"$rainbow_table_id\"}[5m]) > 0)",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "{{job}} - generate",
           "refId": "B"
         },
         {
-          "expr": "sum by (job)(rainbow_chain_write_seconds_sum{job=\"hashbash-engine-go\"} offset $golang_job_time_shift)",
+          "expr": "sum by (job, rainbow_table_id)(rainbow_chain_write_seconds_sum{job=\"hashbash-engine-go\", rainbow_table_id=~\"$rainbow_table_id\"} offset $golang_job_time_shift and rate(rainbow_chain_write_seconds_sum{job=\"hashbash-engine-go\", rainbow_table_id=~\"$rainbow_table_id\"}[5m] offset $golang_job_time_shift) > 0)",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "{{job}} - write",
           "refId": "C"
         },
         {
-          "expr": "sum by (job)(rainbow_chain_write_seconds_sum{job=\"hashbash-engine-java\"})",
+          "expr": "sum by (job, rainbow_table_id)(rainbow_chain_write_seconds_sum{job=\"hashbash-engine-java\", rainbow_table_id=~\"$rainbow_table_id\"} and rate(rainbow_chain_write_seconds_sum{job=\"hashbash-engine-java\", rainbow_table_id=~\"$rainbow_table_id\"}[5m]) > 0)",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "{{job}} - write",
@@ -444,6 +444,31 @@
         "query": "1s",
         "skipUrlSync": false,
         "type": "textbox"
+      },
+      {
+        "allValue": ".*",
+        "current": {
+          "text": "All",
+          "value": "$__all"
+        },
+        "datasource": "Prometheus",
+        "definition": "label_values(rainbow_chain_created_total, rainbow_table_id)",
+        "hide": 0,
+        "includeAll": true,
+        "label": "Rainbow Table ID",
+        "multi": false,
+        "name": "rainbow_table_id",
+        "options": [],
+        "query": "label_values(rainbow_chain_created_total, rainbow_table_id)",
+        "refresh": 2,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
       }
     ]
   },
@@ -479,5 +504,5 @@
   "timezone": "",
   "title": "Hashbash Generation Stats",
   "uid": "IxJHtjZZk",
-  "version": 2
+  "version": 1
 }
