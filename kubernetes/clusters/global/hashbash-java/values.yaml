@@ -7,13 +7,13 @@ configmap:
     SPRING_RABBITMQ_HOST: rabbitmq-0.rabbitmq-headless.hashbash-components.svc.cluster.local
 
 livenessProbe:
-  initialDelaySeconds: 30
+  initialDelaySeconds: 15
   httpGet:
     path: /actuator/health
     port: management
 
 readinessProbe:
-  initialDelaySeconds: 30
+  initialDelaySeconds: 15
   httpGet:
     path: /actuator/health
     port: management

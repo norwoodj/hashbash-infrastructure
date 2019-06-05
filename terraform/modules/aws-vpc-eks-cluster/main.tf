@@ -67,7 +67,7 @@ module "eks" {
   worker_groups = [
     {
       name                 = "default"
-      instance_type        = "t3.medium"
+      instance_type        = "m5.large"
       key_name             = "${var.ec2_key_pair}"
       asg_desired_capacity = 1
       asg_min_size         = 0

@@ -15,13 +15,13 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "iteration": 1559700894648,
+  "iteration": 1559704989736,
   "links": [],
   "panels": [
     {
       "aliasColors": {
-        "hashbash-engine-go": "#0005aa",
-        "hashbash-engine-java": "#0d9e00"
+        "hashbash-webapp-go - 200": "#0005aa",
+        "hashbash-webapp-java - 200": "#0d9e00"
       },
       "bars": false,
       "dashLength": 10,
@@ -33,7 +33,7 @@
         "x": 0,
         "y": 0
       },
-      "id": 4,
+      "id": 2,
       "legend": {
         "avg": false,
         "current": false,
@@ -57,18 +57,17 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum by (rainbow_table_id, job)(rainbow_chain_created_total{job=\"hashbash-engine-go\", rainbow_table_id=~\"$rainbow_table_id\"} offset $golang_job_time_shift and (rate(rainbow_chain_created_total{job=\"hashbash-engine-go\", rainbow_table_id=~\".*\"}[5m] offset $golang_job_time_shift) > 0))",
+          "expr": "sum by (ingress, status)(rate(nginx_ingress_controller_requests{ingress=~\"hashbash-webapp-go.*\"}[1m] offset $golang_time_shift))",
           "format": "time_series",
-          "hide": false,
           "intervalFactor": 1,
-          "legendFormat": "{{ job }}",
+          "legendFormat": "{{ingress}} - {{status}}",
           "refId": "A"
         },
         {
-          "expr": "sum by (rainbow_table_id, job)(rainbow_chain_created_total{job=\"hashbash-engine-java\", rainbow_table_id=~\"$rainbow_table_id\"} and (rate(rainbow_chain_created_total{job=\"hashbash-engine-java\", rainbow_table_id=~\".*\"}[5m]) > 0))",
+          "expr": "sum by (ingress, status)(rate(nginx_ingress_controller_requests{ingress=~\"hashbash-webapp-java.*\"}[1m]))",
           "format": "time_series",
           "intervalFactor": 1,
-          "legendFormat": "{{ job }}",
+          "legendFormat": "{{ingress}} - {{status}}",
           "refId": "B"
         }
       ],
@@ -76,7 +75,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Chains Generated",
+      "title": "Response Rates (per second)",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -115,8 +114,8 @@
     },
     {
       "aliasColors": {
-        "hashbash-engine-go": "#0005aa",
-        "hashbash-engine-java": "#0d9e00"
+        "hashbash-webapp-go": "#0005aa",
+        "hashbash-webapp-java": "#0d9e00"
       },
       "bars": false,
       "dashLength": 10,
@@ -152,17 +151,17 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(namespace_pod_name_container_name:container_cpu_usage_seconds_total:sum_rate{namespace=\"hashbash\", pod_name=~\"hashbash-engine-go.*\"}) by (pod_name)",
+          "expr": "histogram_quantile(.50, sum by (le, ingress)(rate(nginx_ingress_controller_response_duration_seconds_bucket{ingress=\"hashbash-webapp-go\"}[1m] offset $golang_time_shift)))",
           "format": "time_series",
           "intervalFactor": 1,
-          "legendFormat": "hashbash-engine-go",
+          "legendFormat": "{{ingress}}",
           "refId": "A"
         },
         {
-          "expr": "sum(namespace_pod_name_container_name:container_cpu_usage_seconds_total:sum_rate{namespace=\"hashbash\", pod_name=~\"hashbash-engine-java.*\"}) by (pod_name)",
+          "expr": "histogram_quantile(.50, sum by (le, ingress)(rate(nginx_ingress_controller_response_duration_seconds_bucket{ingress=\"hashbash-webapp-java\"}[1m])))",
           "format": "time_series",
           "intervalFactor": 1,
-          "legendFormat": "hashbash-engine-java",
+          "legendFormat": "{{ingress}}",
           "refId": "B"
         }
       ],
@@ -170,124 +169,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "CPU usage",
-      "tooltip": {
-        "shared": true,
-        "sort": 0,
-        "value_type": "individual"
-      },
-      "type": "graph",
-      "xaxis": {
-        "buckets": null,
-        "mode": "time",
-        "name": null,
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        },
-        {
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        }
-      ],
-      "yaxis": {
-        "align": false,
-        "alignLevel": null
-      }
-    },
-    {
-      "aliasColors": {
-        "hashbash-engine-go": "rgb(0, 2, 159)",
-        "hashbash-engine-go - generate": "#0005aa",
-        "hashbash-engine-go - generate rt 1": "rgb(19, 0, 182)",
-        "hashbash-engine-go - write": "yellow",
-        "hashbash-engine-go - write rt 1 ": "dark-green",
-        "hashbash-engine-java": "rgb(239, 251, 2)",
-        "hashbash-engine-java - generate": "#0d9e00",
-        "hashbash-engine-java - write": "#ffffff",
-        "hashbash-engine-java - write rt 2 ": "rgb(255, 255, 255)",
-        "{batch_size=\"1000\",chain_length=\"5000\",hash_function=\"MD5\",job=\"hashbash-engine-go\",rainbow_table_id=\"1\"}": "dark-green",
-        "{batch_size=\"1000\",chain_length=\"5000\",hash_function=\"MD5\",job=\"hashbash-engine-java\",rainbow_table_id=\"2\"}": "rgb(255, 255, 255)"
-      },
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "fill": 1,
-      "gridPos": {
-        "h": 9,
-        "w": 12,
-        "x": 0,
-        "y": 8
-      },
-      "id": 2,
-      "legend": {
-        "avg": false,
-        "current": false,
-        "max": false,
-        "min": false,
-        "show": true,
-        "total": false,
-        "values": false
-      },
-      "lines": true,
-      "linewidth": 1,
-      "links": [],
-      "nullPointMode": "null",
-      "percentage": false,
-      "pointradius": 2,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
-      "targets": [
-        {
-          "expr": "sum by (job, rainbow_table_id)(rainbow_chain_generate_seconds_sum{job=\"hashbash-engine-go\", rainbow_table_id=~\"$rainbow_table_id\"} offset $golang_job_time_shift and rate(rainbow_chain_generate_seconds_sum{job=\"hashbash-engine-go\", rainbow_table_id=~\"$rainbow_table_id\"}[5m] offset $golang_job_time_shift) > 0)",
-          "format": "time_series",
-          "intervalFactor": 1,
-          "legendFormat": "{{job}} - generate",
-          "refId": "A"
-        },
-        {
-          "expr": "sum by (job, rainbow_table_id)(rainbow_chain_generate_seconds_sum{job=\"hashbash-engine-java\", rainbow_table_id=~\"$rainbow_table_id\"} and rate(rainbow_chain_generate_seconds_sum{job=\"hashbash-engine-java\", rainbow_table_id=~\"$rainbow_table_id\"}[5m]) > 0)",
-          "format": "time_series",
-          "intervalFactor": 1,
-          "legendFormat": "{{job}} - generate",
-          "refId": "B"
-        },
-        {
-          "expr": "sum by (job, rainbow_table_id)(rainbow_chain_write_seconds_sum{job=\"hashbash-engine-go\", rainbow_table_id=~\"$rainbow_table_id\"} offset $golang_job_time_shift and rate(rainbow_chain_write_seconds_sum{job=\"hashbash-engine-go\", rainbow_table_id=~\"$rainbow_table_id\"}[5m] offset $golang_job_time_shift) > 0)",
-          "format": "time_series",
-          "intervalFactor": 1,
-          "legendFormat": "{{job}} - write",
-          "refId": "C"
-        },
-        {
-          "expr": "sum by (job, rainbow_table_id)(rainbow_chain_write_seconds_sum{job=\"hashbash-engine-java\", rainbow_table_id=~\"$rainbow_table_id\"} and rate(rainbow_chain_write_seconds_sum{job=\"hashbash-engine-java\", rainbow_table_id=~\"$rainbow_table_id\"}[5m]) > 0)",
-          "format": "time_series",
-          "intervalFactor": 1,
-          "legendFormat": "{{job}} - write",
-          "refId": "D"
-        }
-      ],
-      "thresholds": [],
-      "timeFrom": null,
-      "timeRegions": [],
-      "timeShift": null,
-      "title": "Job Times",
+      "title": "P50 Latency (seconds)",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -326,15 +208,110 @@
     },
     {
       "aliasColors": {
-        "hashbash-engine-go - memory use": "#0005aa",
-        "hashbash-engine-java - memory use": "#0d9e00"
+        "hashbash-webapp-go": "#0005aa",
+        "hashbash-webapp-java": "#0d9e00"
       },
       "bars": false,
       "dashLength": 10,
       "dashes": false,
       "fill": 1,
       "gridPos": {
-        "h": 9,
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 8
+      },
+      "id": 10,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "percentage": false,
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "sum(container_memory_usage_bytes{namespace=\"hashbash\", container_name=\"hashbash\", pod_name=~\"hashbash-webapp-go.*\"} offset $golang_time_shift)",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "hashbash-webapp-go",
+          "refId": "A"
+        },
+        {
+          "expr": "sum(container_memory_usage_bytes{namespace=\"hashbash\", container_name=\"hashbash\", pod_name=~\"hashbash-webapp-java.*\"})",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "hashbash-webapp-java",
+          "refId": "B"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Memory Utilization",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "decbytes",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {
+        "hashbash-webapp-go": "#0005aa",
+        "hashbash-webapp-java": "#0d9e00",
+        "{ingress=\"hashbash-webapp-go\"}": "#0005aa"
+      },
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "fill": 1,
+      "gridPos": {
+        "h": 8,
         "w": 12,
         "x": 12,
         "y": 8
@@ -363,25 +340,25 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(container_memory_usage_bytes{namespace=\"hashbash\", container_name=\"hashbash\", pod_name=~\"hashbash-engine-go.*\"} offset $golang_job_time_shift)",
+          "expr": "histogram_quantile(.99, sum by (le, ingress)(rate(nginx_ingress_controller_response_duration_seconds_bucket{ingress=\"hashbash-webapp-go\"}[1m] offset $golang_time_shift)))",
           "format": "time_series",
           "intervalFactor": 1,
-          "legendFormat": "hashbash-engine-go - memory use",
-          "refId": "B"
+          "legendFormat": "{{ingress}}",
+          "refId": "A"
         },
         {
-          "expr": "sum(container_memory_usage_bytes{namespace=\"hashbash\", container_name=\"hashbash\", pod_name=~\"hashbash-engine-java.*\"})",
+          "expr": "histogram_quantile(.99, sum by (le, ingress)(rate(nginx_ingress_controller_response_duration_seconds_bucket{ingress=\"hashbash-webapp-java\"}[1m])))",
           "format": "time_series",
           "intervalFactor": 1,
-          "legendFormat": "hashbash-engine-java - memory use",
-          "refId": "A"
+          "legendFormat": "{{ingress}}",
+          "refId": "B"
         }
       ],
       "thresholds": [],
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Memory Usage",
+      "title": "P99 Latency (seconds)",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -397,7 +374,7 @@
       },
       "yaxes": [
         {
-          "format": "bytes",
+          "format": "s",
           "label": null,
           "logBase": 1,
           "max": null,
@@ -424,7 +401,7 @@
   "style": "dark",
   "tags": [
     "hashbash",
-    "engine"
+    "web"
   ],
   "templating": {
     "list": [
@@ -434,47 +411,16 @@
           "value": "1s"
         },
         "hide": 0,
-        "label": "Golang Job Time Shift",
-        "name": "golang_job_time_shift",
-        "options": [
-          {
-            "text": "1s",
-            "value": "1s"
-          }
-        ],
+        "label": "Golang Time Shift",
+        "name": "golang_time_shift",
         "query": "1s",
         "skipUrlSync": false,
         "type": "textbox"
-      },
-      {
-        "allValue": ".*",
-        "current": {
-          "text": "All",
-          "value": "$__all"
-        },
-        "datasource": "Prometheus",
-        "definition": "label_values(rainbow_chain_created_total, rainbow_table_id)",
-        "hide": 0,
-        "includeAll": true,
-        "label": "Rainbow Table ID",
-        "multi": false,
-        "name": "rainbow_table_id",
-        "options": [],
-        "query": "label_values(rainbow_chain_created_total, rainbow_table_id)",
-        "refresh": 2,
-        "regex": "",
-        "skipUrlSync": false,
-        "sort": 0,
-        "tagValuesQuery": "",
-        "tags": [],
-        "tagsQuery": "",
-        "type": "query",
-        "useTags": false
       }
     ]
   },
   "time": {
-    "from": "now-3h",
+    "from": "now-1h",
     "to": "now"
   },
   "timepicker": {
@@ -503,7 +449,7 @@
     ]
   },
   "timezone": "",
-  "title": "Hashbash Generation Stats",
-  "uid": "IxJHtjZZk",
+  "title": "Hashbash Webapp Metrics",
+  "uid": "wTaFhLMWz",
   "version": 1
 }
